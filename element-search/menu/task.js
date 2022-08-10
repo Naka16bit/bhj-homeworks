@@ -8,7 +8,6 @@ for (let mainMenu of mainMenus) {
                 
                 if (subMenu.classList.contains("menu_active")) {
                     deactivate();
-                    return false;
                 }
                 else {
                     deactivate();
