@@ -4,26 +4,19 @@ class Game {
     this.wordElement = container.querySelector('.word');
     this.winsElement = container.querySelector('.status__wins');
     this.lossElement = container.querySelector('.status__loss');
-
-    this.reset();
-
+    this.timer = container.querySelector('.timer');
+    
+    this.timerId = null;
+  
     this.registerEvents();
   }
 
-  reset() {
-    this.setNewWord();
-    this.winsElement.textContent = 0;
-    this.lossElement.textContent = 0;
-  }
-
   registerEvents() {
-    /*
-      TODO:
-      Написать обработчик события, который откликается
-      на каждый введённый символ.
-      В случае правильного ввода слова вызываем this.success()
-      При неправильном вводе символа - this.fail();
-     */
+    document.addEventListener('keydown', (event) => {
+      let currentSymbol = this.currentSymbol.textContent;
+      let symbol = event.key;
+      currentSymbol === symbol ? this.success() : this.fail();
+    })
   }
 
   success() {
@@ -34,24 +27,45 @@ class Game {
     }
 
     if (++this.winsElement.textContent === 10) {
-      alert('Победа!');
       this.reset();
+      alert('Вы победили!');
+      this.countdown();
     }
     this.setNewWord();
   }
 
   fail() {
     if (++this.lossElement.textContent === 5) {
-      alert('Вы проиграли!');
       this.reset();
+      alert('Вы проиграли!');
+      this.countdown();
     }
     this.setNewWord();
+  }
+
+  reset() {
+    clearInterval(this.timerId)
+    this.winsElement.textContent = 0;
+    this.lossElement.textContent = 0;
   }
 
   setNewWord() {
     const word = this.getWord();
 
     this.renderWord(word);
+    this.timer.textContent = word.length;
+  }
+
+  countdown() {
+    this.timerId = setInterval(() => {
+      let counter = this.timer.textContent;
+      if (counter > 0) {
+        counter--;
+        this.timer.textContent = counter;
+      } else {
+        this.fail();
+      }
+    }, 1000)
   }
 
   getWord() {
@@ -86,5 +100,6 @@ class Game {
   }
 }
 
-new Game(document.getElementById('game'))
-
+const game = new Game(document.getElementById('game'));
+game.setNewWord();
+game.countdown();
