@@ -30,21 +30,26 @@ products.forEach(product => {
             quantity = 1;
             product.querySelector(".product__quantity-value").innerText = 1;
         } else {
-            cart.innerHTML +=
+            cart.insertAdjacentHTML("beforeEnd", 
             `<div class="cart__product" data-id="${product.getAttribute("data-id")}">
-                <a href="#" class="cart__product-remove" onclick=
-                    "this.closest('.cart__product').outerHTML = '';
-                    if (cart.querySelector('.cart__product') === null) {
-                        cart.closest('.cart').classList.add('cart_hidden');
-                    }"
-                >&times;</a>
+                <a href="#" class="cart__product-remove">&times;</a>
                 <img class="cart__product-image" src="${img.getAttribute("src")}"> 
                 <div class="cart__product-count">${quantityToAdd.innerText}</div>
-            </div>`;
+            </div>`);
             quantity = 1;
             product.querySelector(".product__quantity-value").innerText = 1;
             cart.closest(".cart").classList.remove("cart_hidden");
-        }  
+
+            const productRemoves = cart.querySelectorAll(".cart__product-remove");
+            productRemoves.forEach(productRemove => {
+                productRemove.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    productRemove.closest(".cart__product").remove();
+                    if (cart.querySelector(".cart__product") === null) {
+                        cart.closest(".cart").classList.add("cart_hidden");
+                    }
+                });
+            });
+        }
     });
 });
-
