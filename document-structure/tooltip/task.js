@@ -26,12 +26,17 @@ const positions = {
 
 elements.forEach(element => { 
     element.addEventListener("click", (e) => {
+        e.preventDefault();
+
         const oldTooltip = document.querySelector(".tooltip");
+        let shouldShow = true;
         if (oldTooltip !== null) {
             oldTooltip.remove();
+            shouldShow = oldTooltip.innerText !== element.getAttribute("title");
         }
-        showTooltip(element, "top");
-        e.preventDefault();
+        if (shouldShow) {
+            showTooltip(element, "top");
+        }
     })
 })
 
