@@ -18,11 +18,10 @@ tasksAdd.addEventListener("click", (e) => {
     </div>`);
     taskInput.value = "";
 
-    const taskRemoves = document.querySelectorAll(".task__remove");
-    taskRemoves.forEach(taskRemove => {
-        taskRemove.addEventListener("click", (e) => {
-            e.preventDefault();
-            taskRemove.closest(".task").remove();
-        });
+    const taskRemove = tasksList.querySelector(".task:last-child a");
+    taskRemove.addEventListener("click", (e) => {
+        e.preventDefault();
+        taskRemove.closest(".task").remove();
     });
+    
 });
